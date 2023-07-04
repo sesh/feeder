@@ -5,8 +5,8 @@ from pathlib import Path
 
 import thttp
 
-class FeedItem:
 
+class FeedItem:
     def __init__(self, id, url, title, content_text, content_html, date_published, authors=[]):
         self.id = id
         self.url = url
@@ -28,7 +28,7 @@ def fetch_existing_feeditems(url):
                 item.get("content_text"),
                 item.get("content_html"),
                 item.get("date_published"),
-                item.get("authors")
+                item.get("authors"),
             )
 
 
