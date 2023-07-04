@@ -12,6 +12,9 @@ class LoadSettingsTestCase(TestCase):
 
     def test_settings_loads_from_module(self):
         with tempfile.TemporaryDirectory(dir=os.getcwd()) as dir:
+            with open(dir + "/__init__.py", "w") as f:
+                f.write("\n")
+
             with open(dir + "/settings.py", "w") as f:
                 f.write("FEED_FILENAME = 'dist/feed.json'")
                 f.flush()
