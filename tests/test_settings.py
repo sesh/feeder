@@ -1,6 +1,5 @@
 import os
 import tempfile
-import time
 from unittest import TestCase
 
 from feeder.feeder import load_settings

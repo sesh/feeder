@@ -1,7 +1,6 @@
 import json
 import os
 import tempfile
-import time
 from unittest import TestCase, mock
 
 import thttp
