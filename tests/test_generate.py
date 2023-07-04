@@ -44,15 +44,17 @@ class GenerateFeedTestCase(TestCase):
                 f.write("FEED_URL = 'https://www.jsonfeed.org/feed.json'\n")
                 f.write("FEED_VERSION = '1'\n")
                 f.flush()
+                os.fsync(f.fileno())
 
             with open(dir + "/__init__.py", "w") as f:
                 f.write("")
+                f.flush()
+                os.fsync(f.fileno())
 
             module_name = dir.split("/")[-1] + ".settings"
 
             mock_return_value = thttp.Response(None, None, JSONFEED_ORG_JSONFEED, 200, None, None, None)
             with mock.patch("feeder.feeder.thttp.request", return_value=mock_return_value):
-                time.sleep(2)
                 generate(module_name=module_name)
 
             original_feed = JSONFEED_ORG_JSONFEED
@@ -73,9 +75,12 @@ class GenerateFeedTestCase(TestCase):
                 f.write("FEED_HOMEPAGE_URL = 'https://www.example.org/'\n")
                 f.write(f"FEED_FUNCTION = '{feed_function}'\n")
                 f.flush()
+                os.fsync(f.fileno())
 
             with open(dir + "/__init__.py", "w") as f:
                 f.write("")
+                f.flush()
+                os.fsync(f.fileno())
 
             with open(dir + "/core.py", "w") as f:
                 f.write("from feeder.feeder import FeedItem\n\n")
@@ -83,11 +88,12 @@ class GenerateFeedTestCase(TestCase):
                 f.write(
                     "    return [FeedItem('https://example.org', 'https://example.org', 'Example', None, '<p>example.org</p>', '2023‐07‐04T00:25:39+00:00')]"  # noqa
                 )
+                f.flush()
+                os.fsync(f.fileno())
 
             generate(module_name=module_name)
 
             with open(f"{dir}/feed_with_items.json", "r") as f:
-                time.sleep(2)
                 generated_feed = json.loads(f.read())
 
             self.assertEqual(generated_feed["home_page_url"], "https://www.example.org/")

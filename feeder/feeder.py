@@ -60,12 +60,6 @@ def load_settings(module_name):
     settings = default_settings
 
     if module_name:
-        print(module_name)
-        print(os.listdir("."))
-        print(os.listdir("./" + module_name.split(".")[0]))
-        print("---")
-
-    if module_name:
         settings_module = importlib.import_module(module_name)
 
         for k, v in default_settings.items():

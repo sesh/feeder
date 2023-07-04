@@ -15,13 +15,14 @@ class LoadSettingsTestCase(TestCase):
         with tempfile.TemporaryDirectory(dir=os.getcwd(), prefix="loads_from_module") as dir:
             with open(dir + "/__init__.py", "w") as f:
                 f.write("\n")
+                f.flush()
+                os.fsync(f.fileno())
 
             with open(dir + "/settings.py", "w") as f:
                 f.write("FEED_FILENAME = 'dist/feed.json'")
                 f.flush()
+                os.fsync(f.fileno())
 
-                module_name = dir.split("/")[-1] + ".settings"
-
-                time.sleep(2)
-                settings = load_settings(module_name)
-                self.assertEqual(settings["FEED_FILENAME"], "dist/feed.json")
+            module_name = dir.split("/")[-1] + ".settings"
+            settings = load_settings(module_name)
+            self.assertEqual(settings["FEED_FILENAME"], "dist/feed.json")
