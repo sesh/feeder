@@ -1,5 +1,6 @@
 import os
 import tempfile
+import time
 from unittest import TestCase
 
 from feeder.feeder import load_settings
@@ -11,7 +12,7 @@ class LoadSettingsTestCase(TestCase):
         self.assertEqual(settings["FEED_FILENAME"], "out/feed.json")
 
     def test_settings_loads_from_module(self):
-        with tempfile.TemporaryDirectory(dir=os.getcwd()) as dir:
+        with tempfile.TemporaryDirectory(dir=os.getcwd(), prefix="loads_from_module") as dir:
             with open(dir + "/__init__.py", "w") as f:
                 f.write("\n")
 
@@ -21,5 +22,6 @@ class LoadSettingsTestCase(TestCase):
 
                 module_name = dir.split("/")[-1] + ".settings"
 
+                time.sleep(2)
                 settings = load_settings(module_name)
                 self.assertEqual(settings["FEED_FILENAME"], "dist/feed.json")

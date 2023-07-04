@@ -60,6 +60,12 @@ def load_settings(module_name):
     settings = default_settings
 
     if module_name:
+        print(module_name)
+        print(os.listdir("."))
+        print(os.listdir("./" + module_name.split(".")[0]))
+        print("---")
+
+    if module_name:
         settings_module = importlib.import_module(module_name)
 
         for k, v in default_settings.items():
@@ -110,8 +116,12 @@ def json_feed(
     return feed
 
 
-def generate():
-    settings_module_name = os.environ.get("FEEDER_SETTINGS_MODULE", "settings")
+def generate(*, module_name=None):
+    if not module_name:
+        settings_module_name = os.environ.get("FEEDER_SETTINGS_MODULE", "settings")
+    else:
+        settings_module_name = module_name
+
     settings = load_settings(settings_module_name)
 
     feed_path = Path(settings["FEED_FILENAME"])

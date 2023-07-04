@@ -1,6 +1,7 @@
 import json
 import os
 import tempfile
+import time
 from unittest import TestCase, mock
 
 import thttp
@@ -34,7 +35,7 @@ JSONFEED_ORG_JSONFEED = {
 
 class GenerateFeedTestCase(TestCase):
     def test_generate_jsonfeed_feed(self):
-        with tempfile.TemporaryDirectory(dir=os.getcwd()) as dir:
+        with tempfile.TemporaryDirectory(dir=os.getcwd(), prefix="generate_jsonfeed_feed") as dir:
             with open(dir + "/settings.py", "w") as f:
                 f.write(f"FEED_FILENAME = '{dir}/feed_jsonfeed.org.json'\n")
                 f.write("FEED_TITLE = 'JSON Feed'\n")
@@ -44,11 +45,15 @@ class GenerateFeedTestCase(TestCase):
                 f.write("FEED_VERSION = '1'\n")
                 f.flush()
 
+            with open(dir + "/__init__.py", "w") as f:
+                f.write("")
+
             module_name = dir.split("/")[-1] + ".settings"
-            with mock.patch.dict(os.environ, {"FEEDER_SETTINGS_MODULE": module_name}):
-                mock_return_value = thttp.Response(None, None, JSONFEED_ORG_JSONFEED, 200, None, None, None)
-                with mock.patch("feeder.feeder.thttp.request", return_value=mock_return_value):
-                    generate()
+
+            mock_return_value = thttp.Response(None, None, JSONFEED_ORG_JSONFEED, 200, None, None, None)
+            with mock.patch("feeder.feeder.thttp.request", return_value=mock_return_value):
+                time.sleep(2)
+                generate(module_name=module_name)
 
             original_feed = JSONFEED_ORG_JSONFEED
 
@@ -58,7 +63,7 @@ class GenerateFeedTestCase(TestCase):
             self.assertDictEqual(original_feed, generated_feed)
 
     def test_generate_feed_with_items(self):
-        with tempfile.TemporaryDirectory(dir=os.getcwd()) as dir:
+        with tempfile.TemporaryDirectory(dir=os.getcwd(), prefix="feed_with_items") as dir:
             feed_function = dir.split("/")[-1] + ".core.fn"
             module_name = dir.split("/")[-1] + ".settings"
 
@@ -79,12 +84,10 @@ class GenerateFeedTestCase(TestCase):
                     "    return [FeedItem('https://example.org', 'https://example.org', 'Example', None, '<p>example.org</p>', '2023‐07‐04T00:25:39+00:00')]"  # noqa
                 )
 
-            print(feed_function)
-
-            with mock.patch.dict(os.environ, {"FEEDER_SETTINGS_MODULE": module_name, "FEED_FUNCTION": feed_function}):
-                generate()
+            generate(module_name=module_name)
 
             with open(f"{dir}/feed_with_items.json", "r") as f:
+                time.sleep(2)
                 generated_feed = json.loads(f.read())
 
             self.assertEqual(generated_feed["home_page_url"], "https://www.example.org/")
