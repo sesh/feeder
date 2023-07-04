@@ -110,14 +110,7 @@ def json_feed(
     return feed
 
 
-def generate(*, module_name=None):
-    if not module_name:
-        settings_module_name = os.environ.get("FEEDER_SETTINGS_MODULE", "settings")
-    else:
-        settings_module_name = module_name
-
-    settings = load_settings(settings_module_name)
-
+def generate(*, settings=None):
     feed_path = Path(settings["FEED_FILENAME"])
     feed_directory = Path(os.path.dirname(feed_path))
     feed_directory.mkdir(parents=True, exist_ok=True)

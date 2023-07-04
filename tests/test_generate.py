@@ -34,27 +34,22 @@ JSONFEED_ORG_JSONFEED = {
 
 class GenerateFeedTestCase(TestCase):
     def test_generate_jsonfeed_feed(self):
+
+
         with tempfile.TemporaryDirectory(dir=os.getcwd(), prefix="generate_jsonfeed_feed") as dir:
-            with open(dir + "/settings.py", "w") as f:
-                f.write(f"FEED_FILENAME = '{dir}/feed_jsonfeed.org.json'\n")
-                f.write("FEED_TITLE = 'JSON Feed'\n")
-                f.write("FEED_ICON = 'https://micro.blog/jsonfeed/avatar.jpg'\n")
-                f.write("FEED_HOMEPAGE_URL = 'https://www.jsonfeed.org/'\n")
-                f.write("FEED_URL = 'https://www.jsonfeed.org/feed.json'\n")
-                f.write("FEED_VERSION = '1'\n")
-                f.flush()
-                os.fsync(f.fileno())
-
-            with open(dir + "/__init__.py", "w") as f:
-                f.write("")
-                f.flush()
-                os.fsync(f.fileno())
-
-            module_name = dir.split("/")[-1] + ".settings"
+            settings = {
+                "FEED_FILENAME": f"{dir}/feed_jsonfeed.org.json",
+                "FEED_TITLE": "JSON Feed",
+                "FEED_ICON": "https://micro.blog/jsonfeed/avatar.jpg",
+                "FEED_HOMEPAGE_URL": "https://www.jsonfeed.org/",
+                "FEED_URL": "https://www.jsonfeed.org/feed.json",
+                "FEED_VERSION": "1",
+                "FEED_FUNCTION": None
+            }
 
             mock_return_value = thttp.Response(None, None, JSONFEED_ORG_JSONFEED, 200, None, None, None)
             with mock.patch("feeder.feeder.thttp.request", return_value=mock_return_value):
-                generate(module_name=module_name)
+                generate(settings=settings)
 
             original_feed = JSONFEED_ORG_JSONFEED
 
@@ -64,22 +59,18 @@ class GenerateFeedTestCase(TestCase):
             self.assertDictEqual(original_feed, generated_feed)
 
     def test_generate_feed_with_items(self):
+
+
         with tempfile.TemporaryDirectory(dir=os.getcwd(), prefix="feed_with_items") as dir:
-            feed_function = dir.split("/")[-1] + ".core.fn"
-            module_name = dir.split("/")[-1] + ".settings"
-
-            with open(dir + "/settings.py", "w") as f:
-                f.write(f"FEED_FILENAME = '{dir}/feed_with_items.json'\n")
-                f.write("FEED_TITLE = 'Test Feed'\n")
-                f.write("FEED_HOMEPAGE_URL = 'https://www.example.org/'\n")
-                f.write(f"FEED_FUNCTION = '{feed_function}'\n")
-                f.flush()
-                os.fsync(f.fileno())
-
-            with open(dir + "/__init__.py", "w") as f:
-                f.write("")
-                f.flush()
-                os.fsync(f.fileno())
+            settings = {
+                "FEED_FILENAME": f"{dir}/feed_with_items.json",
+                "FEED_TITLE": "Test Feed",
+                "FEED_ICON": None,
+                "FEED_HOMEPAGE_URL": "https://www.example.org/",
+                "FEED_URL": None,
+                "FEED_VERSION": "1.1",
+                "FEED_FUNCTION": dir.split("/")[-1] + ".core.fn"
+            }
 
             with open(dir + "/core.py", "w") as f:
                 f.write("from feeder.feeder import FeedItem\n\n")
@@ -90,7 +81,7 @@ class GenerateFeedTestCase(TestCase):
                 f.flush()
                 os.fsync(f.fileno())
 
-            generate(module_name=module_name)
+            generate(settings=settings)
 
             with open(f"{dir}/feed_with_items.json", "r") as f:
                 generated_feed = json.loads(f.read())

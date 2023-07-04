@@ -24,4 +24,5 @@ class LoadSettingsTestCase(TestCase):
 
             module_name = dir.split("/")[-1] + ".settings"
             settings = load_settings(module_name)
+
             self.assertEqual(settings["FEED_FILENAME"], "dist/feed.json")

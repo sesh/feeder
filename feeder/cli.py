@@ -27,13 +27,14 @@ FEED_HOMEPAGE_URL = ""
 FEED_ICON = ""
 """
 
-GENERATE_FILE = """from feeder.feeder import generate
+GENERATE_FILE = """from feeder.feeder import generate, load_settings
 import os
 
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
-    generate()
+    settings_module_name = os.environ.get("FEEDER_SETTINGS_MODULE", "settings")
+    settings = load_settings(settings_module_name)
+    generate(settings=settings)
 """
 
 FEED_FILE = """from feeder.feeder import FeedItem
