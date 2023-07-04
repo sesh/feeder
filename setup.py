@@ -29,4 +29,8 @@ setup(
     packages=["feeder"],
     install_requires=["thttp"],
     python_requires=">=3.7",
+    entry_points="""
+        [console_scripts]
+        feeder=feeder.cli:cli
+    """,
 )

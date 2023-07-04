@@ -1,12 +1,20 @@
 import importlib
 import json
 import os
-from collections import namedtuple
 from pathlib import Path
 
 import thttp
 
-FeedItem = namedtuple("FeedItem", "id url title content_text content_html date_published")
+class FeedItem:
+
+    def __init__(self, id, url, title, content_text, content_html, date_published, authors=[]):
+        self.id = id
+        self.url = url
+        self.title = title
+        self.content_text = content_text
+        self.content_html = content_html
+        self.date_published = date_published
+        self.authors = authors
 
 
 def fetch_existing_feeditems(url):
@@ -20,6 +28,7 @@ def fetch_existing_feeditems(url):
                 item.get("content_text"),
                 item.get("content_html"),
                 item.get("date_published"),
+                item.get("authors")
             )
 
 
@@ -29,7 +38,7 @@ def feed_item_as_json(item):
         "url": item.url,
     }
 
-    optional_fields = ["title", "content_text", "content_html", "date_published"]
+    optional_fields = ["title", "content_text", "content_html", "date_published", "authors"]
     for field in optional_fields:
         if getattr(item, field):
             j[field] = getattr(item, field)
