@@ -28,7 +28,8 @@ setup(
     version=VERSION,
     packages=["feeder"],
     install_requires=["thttp"],
-    python_requires=">=3.7",
+    python_requires=">=3.8",
+    license="MIT License",
     entry_points="""
         [console_scripts]
         feeder=feeder.cli:cli
