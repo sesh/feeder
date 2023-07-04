@@ -34,8 +34,6 @@ JSONFEED_ORG_JSONFEED = {
 
 class GenerateFeedTestCase(TestCase):
     def test_generate_jsonfeed_feed(self):
-
-
         with tempfile.TemporaryDirectory(dir=os.getcwd(), prefix="generate_jsonfeed_feed") as dir:
             settings = {
                 "FEED_FILENAME": f"{dir}/feed_jsonfeed.org.json",
@@ -44,7 +42,7 @@ class GenerateFeedTestCase(TestCase):
                 "FEED_HOMEPAGE_URL": "https://www.jsonfeed.org/",
                 "FEED_URL": "https://www.jsonfeed.org/feed.json",
                 "FEED_VERSION": "1",
-                "FEED_FUNCTION": None
+                "FEED_FUNCTION": None,
             }
 
             mock_return_value = thttp.Response(None, None, JSONFEED_ORG_JSONFEED, 200, None, None, None)
@@ -59,8 +57,6 @@ class GenerateFeedTestCase(TestCase):
             self.assertDictEqual(original_feed, generated_feed)
 
     def test_generate_feed_with_items(self):
-
-
         with tempfile.TemporaryDirectory(dir=os.getcwd(), prefix="feed_with_items") as dir:
             settings = {
                 "FEED_FILENAME": f"{dir}/feed_with_items.json",
@@ -69,7 +65,7 @@ class GenerateFeedTestCase(TestCase):
                 "FEED_HOMEPAGE_URL": "https://www.example.org/",
                 "FEED_URL": None,
                 "FEED_VERSION": "1.1",
-                "FEED_FUNCTION": dir.split("/")[-1] + ".core.fn"
+                "FEED_FUNCTION": dir.split("/")[-1] + ".core.fn",
             }
 
             with open(dir + "/core.py", "w") as f:
