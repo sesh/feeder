@@ -14,7 +14,7 @@ def get_long_description():
 
 
 setup(
-    name="feeder",
+    name="json-feeder",
     description="A framework for generate JSON feeds",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
