@@ -43,6 +43,7 @@ class GenerateFeedTestCase(TestCase):
                 "FEED_URL": "https://www.jsonfeed.org/feed.json",
                 "FEED_VERSION": "1",
                 "FEED_FUNCTION": None,
+                "FEED_MAX_ITEMS": 100,
             }
 
             mock_return_value = thttp.Response(None, None, JSONFEED_ORG_JSONFEED, 200, None, None, None)
@@ -66,6 +67,7 @@ class GenerateFeedTestCase(TestCase):
                 "FEED_URL": None,
                 "FEED_VERSION": "1.1",
                 "FEED_FUNCTION": dir.split("/")[-1] + ".core.fn",
+                "FEED_MAX_ITEMS": 100,
             }
 
             with open(dir + "/core.py", "w") as f:

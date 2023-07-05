@@ -57,6 +57,7 @@ def load_settings(module_name):
         "FEED_HOMEPAGE_URL": None,
         "FEED_ICON": None,
         "FEED_VERSION": "1.1",
+        "FEED_MAX_ITEMS": 100,
     }
 
     settings = default_settings
@@ -136,6 +137,7 @@ def generate(*, settings=None):
         items,
         existing_items,
         version=settings["FEED_VERSION"],
+        max_items=settings["FEED_MAX_ITEMS"],
     )
 
     with open(feed_path, "w") as f:

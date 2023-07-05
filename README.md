@@ -30,6 +30,7 @@ The following settings can be configured:
 - `FEED_HOMEPAGE_URL` is the homepage of your feed, this is optional.
 - `FEED_ICON` is a url to an icon that feed readers might use for your feed. Very optional.
 - `FEED_VERSION` defaults to "1.1" and represents the JSON Feed version.
+- `FEED_MAX_ITEMS` limits the number of items to output in the feed. Default is 100.
 
 Once you've updated your `settings.py` and created your `FEED_FUNCTION` you can generate your feed by running:
 
