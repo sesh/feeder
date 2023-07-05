@@ -33,6 +33,7 @@ def fetch_existing_feeditems(url):
     else:
         return []
 
+
 def feed_item_as_json(item):
     j = {
         "id": item.id,
