@@ -39,5 +39,22 @@ jobs:
     permissions:
       id-token: write
     steps:
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install test dependencies
+        run: |
+          pip install -e '.[test]'
+
+      - name: Install publishing dependencies
+        run: |
+          pip install setuptools wheel twine build
+
+      - name: Build python package
+        run: |
+          python -m build
+
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
