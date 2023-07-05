@@ -10,7 +10,7 @@ _This framework is **highly experimental** and **very likely** to change signifi
 For now, install from Github with:
 
 ```
-python3 -m pip install git+https://github.com/sesh/feeder.git
+python3 -m pip install json-feeder
 ```
 
 Create a directory for your new feed, the start the new feed with:
