@@ -19,7 +19,7 @@ class FeedItem:
 
 def fetch_existing_feeditems(url):
     response = thttp.request(url)
-    if response.json:
+    if response.status == 200 and response.json:
         for item in response.json.get("items"):
             yield FeedItem(
                 item.get("id"),
@@ -30,7 +30,8 @@ def fetch_existing_feeditems(url):
                 item.get("date_published"),
                 item.get("authors"),
             )
-
+    else:
+        return []
 
 def feed_item_as_json(item):
     j = {
