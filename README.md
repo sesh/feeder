@@ -7,7 +7,7 @@ _This framework is **highly experimental** and **very likely** to change signifi
 
 ## Usage
 
-For now, install from Github with:
+Install from PyPI:
 
 ```
 python3 -m pip install json-feeder
