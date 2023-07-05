@@ -21,6 +21,14 @@ feeder startfeed
 
 `settings.py`, `feed.py` and `generate.py` files will be created for you.
 
+To get started simply update the `get_items()` function in `feed.py` to return a list of `FeedItems`.
+
+Generate the feed with:
+
+```
+python3 generate.py
+```
+
 The following settings can be configured:
 
 - `FEED_FUNCTION` the path to a Python function that will return a list of `FeedItem` objects.
@@ -32,11 +40,6 @@ The following settings can be configured:
 - `FEED_VERSION` defaults to "1.1" and represents the JSON Feed version.
 - `FEED_MAX_ITEMS` limits the number of items to output in the feed. Default is 100.
 
-Once you've updated your `settings.py` and created your `FEED_FUNCTION` you can generate your feed by running:
-
-```
-python3 generate.py
-```
 
 
 ### Runnings Tests
